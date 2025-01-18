@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import { deleteTable, getTables, createTable } from '../services/tables.service';
+import { deleteTable, getTables, createTable, updateTable } from '../services/tables.service';
 
 export const useGetTables = () => {
     return useQuery({
@@ -14,6 +14,16 @@ export const useCreateTable = () => {
     return useMutation({
         mutationFn: createTable,
         onSuccess: () => queryClient.invalidateQueries(['tables']),
+    });
+};
+
+export const useUpdateTable = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: updateTable,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['tables']);
+        },
     });
 };
 

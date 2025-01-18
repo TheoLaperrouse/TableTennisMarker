@@ -19,6 +19,14 @@ export async function createTable(table) {
 }
 
 /**
+ * Reset a table
+ * @returns {Promise<Table>}
+ */
+export async function updateTable({ id, players }) {
+    return api.post(`${tablesUrl}/${id}`, { players });
+}
+
+/**
  * Delete a table by ID
  * @param {string} id - The ID of the table to delete.
  * @returns {Promise<void>}
