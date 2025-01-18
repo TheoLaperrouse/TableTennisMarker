@@ -1,0 +1,12 @@
+{
+  "name": "tabletennismarker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Théo Laperrouse",
+  "license": "MIT",
+  "dependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^24.2.1"
+  }
+}

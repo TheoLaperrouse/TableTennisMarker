@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: node_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+    depends_on:
+      - postgres
+    volumes:
+      - ./back:/usr/src/app
+      - /usr/src/app/node_modules
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: vue_app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - back
+    volumes:
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
+
+volumes:
+  pgdata:
