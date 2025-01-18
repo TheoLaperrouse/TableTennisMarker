@@ -1,14 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import { deleteTable, getTables } from '../services/tables.service';
+import { deleteTable, getTables, createTable } from '../services/tables.service';
 
-/**
- * Returns a composable to fetch tables.
- *
- * @usage
- * ```
- * const { isPending, data: tables } = useGetTables();
- * ```
- */
 export const useGetTables = () => {
     return useQuery({
         queryKey: ['tables'],
@@ -16,16 +8,15 @@ export const useGetTables = () => {
     });
 };
 
-/**
- * Returns a composable to delete a table.
- *
- * @returns Composable
- *
- * @usage
- * ```
- * const { mutate: deleteTable } = useDeleteTable();
- * ```
- */
+export const useCreateTable = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: createTable,
+        onSuccess: () => queryClient.invalidateQueries(['tables']),
+    });
+};
+
 export const useDeleteTable = () => {
     const queryClient = useQueryClient();
 

@@ -21,15 +21,14 @@ export default function (db, io) {
     });
 
     router.post('/', async (req, res) => {
-        const { name } = req.body;
+        const { name, players } = req.body;
 
         if (!name) {
             return res.status(400).json({ error: 'Le nom de la table est requis' });
         }
 
         try {
-            const [id] = await db('tables').insert({ name }).returning('id');
-            const newTable = await db('tables').where({ id }).first();
+            const newTable = await db('tables').insert({ name }).returning('*');
             res.status(201).json(newTable);
         } catch (error) {
             console.error(error);

@@ -6,7 +6,7 @@ export const up = async function (knex) {
 
     await knex.schema.createTable('players', (table) => {
         table.increments('id').primary();
-        table.integer('table_id').unsigned().references('id').inTable('tables').onDelete('CASCADE');
+        table.integer('table_id').unsigned().references('id').inTable('tables').onDelete('CASCADE').nullable();
         table.string('name').notNullable();
         table.integer('sets').defaultTo(0);
         table.integer('points').defaultTo(0);

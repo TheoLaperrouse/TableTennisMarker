@@ -11,6 +11,14 @@ export async function getPlayers() {
 }
 
 /**
+ * Create a table
+ * @returns {Promise<Table>}
+ */
+export async function createPlayer(player) {
+    return api.post(playersUrl, player);
+}
+
+/**
  * Get player from id
  * @param {string} id - The ID of the player to retrieve.
  * @returns {Promise<Player>}
@@ -25,5 +33,6 @@ export async function getPlayer(id) {
  * @returns {Promise<void>}
  */
 export async function deletePlayer(id) {
+    console.log(id);
     return api.delete(`${playersUrl}/${id}`);
 }

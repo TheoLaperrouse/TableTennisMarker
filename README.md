@@ -47,9 +47,10 @@ Table Tennis Marker is a real-time application for managing table tennis matches
    docker-compose up -d
    ```
 
-5. Run database migrations:
+5. Run database migrations and seed database:
    ```bash
    npx knex migrate:latest
+   npx knex seed:run
    ```
 
 6. Start the backend server:
@@ -76,35 +77,3 @@ Table Tennis Marker is a real-time application for managing table tennis matches
    ```
 
    The frontend will be available at [http://localhost:5173](http://localhost:5173).
-
-## API Endpoints
-
-### GET `/api/tables`
-Retrieve all tables and associated players.
-
-### POST `/api/tables/:id`
-Update the players of a specific table.
-- **Request Body:**
-  ```json
-  {
-    "players": [
-      { "name": "Player 1", "sets": 0, "points": 0 },
-      { "name": "Player 2", "sets": 0, "points": 0 }
-    ]
-  }
-  ```
-
-- **Response:**
-  ```json
-  {
-    "success": true,
-    "table": {
-      "id": 1,
-      "name": "Table 1",
-      "players": [
-        { "name": "Player 1", "sets": 0, "points": 0 },
-        { "name": "Player 2", "sets": 0, "points": 0 }
-      ]
-    }
-  }
-  ```
