@@ -2,9 +2,9 @@
     <div class="mx-auto max-w-4xl rounded-lg bg-gray-100 p-4 text-black shadow-lg">
         <router-link
             to="/players/create"
-            class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-2xl text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
+            class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xl text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
         >
-            +
+            <FontAwesomeIcon :icon="faPlus" class="text-sm" />
         </router-link>
         <h2 class="mb-4 text-xl font-bold">Liste des Joueurs</h2>
         <ul v-if="players && players.length" class="space-y-2">
@@ -20,9 +20,9 @@
                 </div>
                 <button
                     @click="handleDelete(player.id)"
-                    class="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white shadow-lg hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
+                    class="ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white shadow-lg hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-300"
                 >
-                    ✕
+                    <FontAwesomeIcon :icon="faTrash" />
                 </button>
             </li>
         </ul>
@@ -32,13 +32,14 @@
 
 <script setup>
 import { useGetPlayers, useDeletePlayer } from '@/composables/usePlayersQueries';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const { data: players } = useGetPlayers();
 const { mutateAsync: deletePlayer } = useDeletePlayer();
 
 const handleDelete = async (playerId) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?')) {
-        console.log(playerId);
         await deletePlayer(playerId);
     }
 };

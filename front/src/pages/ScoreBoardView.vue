@@ -1,7 +1,9 @@
 <template>
-    <div class="absolute inset-0 flex flex-col items-center justify-center bg-red-700 p-8 text-white">
+    <div
+        class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-blue-800 p-8 text-white"
+    >
         <h1 class="mb-8 text-5xl font-extrabold">{{ table.name }}</h1>
-        <div class="w-full max-w-6xl rounded-lg bg-red-800 p-8 shadow-2xl">
+        <div class="w-full max-w-6xl rounded-lg bg-blue-900 p-8 shadow-2xl">
             <div class="flex flex-col gap-6">
                 <div
                     v-for="(player, index) in table.players"
@@ -32,5 +34,5 @@ import { useGetTables } from '@/composables/useTablesQueries';
 const route = useRoute();
 const tableId = parseInt(route.params.id);
 const { data: tables } = useGetTables();
-const table = tables.value?.find((t) => t.id === tableId) ?? {};
+const table = tables.value?.find(({ id }) => id === tableId) ?? {};
 </script>
