@@ -28,11 +28,33 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
-import { useGetTables } from '@/composables/useTablesQueries';
+import { io } from 'socket.io-client';
+import { useGetTable } from '@/composables/useTablesQueries';
 
+const socket = io('http://localhost:3000');
 const route = useRoute();
 const tableId = parseInt(route.params.id);
-const { data: tables } = useGetTables();
-const table = tables.value?.find(({ id }) => id === tableId) ?? {};
+const { data: tableData } = useGetTable(tableId);
+const table = ref({});
+
+onMounted(() => {
+    socket.emit('joinTable', tableId);
+
+    if (tableData.value) {
+        table.value = { ...tableData.value, players: tableData.value.players.map((player) => ({ ...player })) };
+    }
+
+    socket.on('scoreUpdated', (data) => {
+        const player = table.value.players.find((p) => p.id === data.playerId);
+        if (player) {
+            player[data.type] += data.value;
+        }
+    });
+});
+
+onBeforeUnmount(() => {
+    socket.emit('leaveTable', tableId);
+});
 </script>

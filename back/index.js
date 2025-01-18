@@ -16,14 +16,34 @@ const db = knex(knexConfig.development);
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/tables', tablesRouter(db, io));
+app.use('/api/tables', tablesRouter(db));
 app.use('/api/players', playersRouter(db));
 
 io.on('connection', (socket) => {
-    console.log('Un utilisateur s’est connecté');
+    console.log('a user connected');
+
+    socket.on('joinTable', (tableId) => {
+        socket.join(`table_${tableId}`);
+        console.log(`User joined table ${tableId}`);
+    });
+
+    socket.on('leaveTable', (tableId) => {
+        socket.leave(`table_${tableId}`);
+        console.log(`User left table ${tableId}`);
+    });
+
+    socket.on('updateScore', async (data) => {
+        const { tableId, playerId, type, value } = data;
+        try {
+            await db('players').where({ id: playerId }).increment(type, value);
+            io.to(`table_${tableId}`).emit('scoreUpdated', { playerId, type, value });
+        } catch (error) {
+            console.error('Error updating score:', error);
+        }
+    });
 
     socket.on('disconnect', () => {
-        console.log('Un utilisateur s’est déconnecté');
+        console.log('user disconnected');
     });
 });
 

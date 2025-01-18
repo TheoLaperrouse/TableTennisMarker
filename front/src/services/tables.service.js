@@ -3,6 +3,14 @@ import { api, baseUrl } from '@/services/api.service.js';
 const tablesUrl = `${baseUrl}/tables`;
 
 /**
+ * Get table by Id
+ * @returns {Promise<Table>}
+ */
+export async function getTable(id) {
+    return api.get(`${tablesUrl}/${id}`);
+}
+
+/**
  * Get all tables
  * @returns {Promise<Table[]>}
  */
@@ -19,7 +27,7 @@ export async function createTable(table) {
 }
 
 /**
- * Reset a table
+ * Reset a table with players
  * @returns {Promise<Table>}
  */
 export async function updateTable({ id, players }) {

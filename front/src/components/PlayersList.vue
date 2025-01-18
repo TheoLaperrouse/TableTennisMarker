@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto max-w-4xl rounded-lg bg-gray-100 p-4 text-black shadow-lg">
+    <div class="mx-auto max-w-4xl rounded-lg p-4 text-black shadow-lg">
         <router-link
             to="/players/create"
             class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xl text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"

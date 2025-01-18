@@ -1,10 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import { deleteTable, getTables, createTable, updateTable } from '../services/tables.service';
+import { deleteTable, getTable, getTables, createTable, updateTable } from '../services/tables.service';
 
 export const useGetTables = () => {
     return useQuery({
         queryKey: ['tables'],
         queryFn: getTables,
+    });
+};
+
+export const useGetTable = (tableId) => {
+    return useQuery({
+        queryKey: ['table', tableId],
+        queryFn: () => getTable(tableId),
     });
 };
 

@@ -24,11 +24,19 @@
                 >
                     <FontAwesomeIcon :icon="faTrash" class="text-sm" />
                 </button>
+                <router-link
+                    :to="`/tables/${table.id}/score`"
+                    class="flex h-6 w-6 items-center justify-center rounded-full bg-green-600 text-lg text-white shadow-lg hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300"
+                >
+                    <FontAwesomeIcon :icon="faGamepad" class="text-sm" />
+                </router-link>
             </div>
             <router-link :to="`/tables/${table.id}`" class="mb-2 block text-xl font-bold text-gray-800">
                 {{ table.name }}
             </router-link>
-            <ScoreBoard :table="table" />
+            <router-link :to="`/tables/${table.id}`" class="block">
+                <ScoreBoard :table="table" />
+            </router-link>
         </div>
     </div>
 </template>
@@ -37,7 +45,7 @@
 import { useGetTables, useDeleteTable } from '@/composables/useTablesQueries';
 import ScoreBoard from '@/components/ScoreBoard.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPen, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash, faPlus, faGamepad } from '@fortawesome/free-solid-svg-icons';
 
 const { data: tables } = useGetTables();
 const { mutateAsync: deleteTable } = useDeleteTable();

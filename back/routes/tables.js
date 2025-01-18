@@ -2,7 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
-export default function (db, io) {
+export default function (db) {
     router.get('/', async (req, res) => {
         try {
             const tables = await db('tables').select('*');
@@ -17,6 +17,25 @@ export default function (db, io) {
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Erreur lors de la récupération des tables' });
+        }
+    });
+
+    router.get('/:id', async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            const table = await db('tables').where({ id }).first();
+            if (!table) {
+                return res.status(404).json({ error: 'Table non trouvée' });
+            }
+
+            const players = await db('players').where({ table_id: id });
+            table.players = players;
+
+            res.json(table);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la récupération de la table' });
         }
     });
 
@@ -69,11 +88,11 @@ export default function (db, io) {
         const { id } = req.params;
 
         try {
-            await db('teams').where('id', id).del();
+            await db('tables').where('id', id).del();
             res.status(204).end();
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Erreur lors de la suppression de l'équipe" });
+            res.status(500).json({ error: 'Erreur lors de la suppression de la table' });
         }
     });
 

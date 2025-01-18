@@ -6,6 +6,7 @@ import HomePage from '@/pages/HomePage.vue';
 import CreateTable from '@/pages/CreateTable.vue';
 import CreatePlayer from '@/pages/CreatePlayer.vue';
 import UpdateTable from '@/pages/UpdateTable.vue';
+import UpdateScorePage from '@/pages/UpdateScorePage.vue';
 
 const routes = [
     { path: '/', component: HomePage },
@@ -13,6 +14,7 @@ const routes = [
     { path: '/tables/create', name: 'CreateTable', component: CreateTable },
     { path: '/tables/edit/:id', name: 'UpdateTable', component: UpdateTable },
     { path: '/tables/:id', name: 'ScoreBoardView', component: ScoreBoardView },
+    { path: '/tables/:id/score', name: 'UpdateScorePage', component: UpdateScorePage },
     { path: '/players', component: PlayersPage },
     { path: '/players/create', name: 'CreatePlayer', component: CreatePlayer },
 ];
