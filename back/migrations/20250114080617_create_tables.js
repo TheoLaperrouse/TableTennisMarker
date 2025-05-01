@@ -17,6 +17,7 @@ export const up = async function (knex) {
         table.integer('sets').defaultTo(0);
         table.integer('points').defaultTo(0);
         table.integer('ranking').defaultTo(500);
+        table.boolean('firstServer').defaultTo(false);
     });
 };
 

@@ -32,13 +32,12 @@ io.on('connection', (socket) => {
         console.log(`User left table ${tableId}`);
     });
 
-    socket.on('updateScore', async (data) => {
-        const { tableId, playerId, type, value } = data;
+    socket.on('refreshScore', async (data) => {
+        const { tableId } = data;
         try {
-            await db('players').where({ id: playerId }).increment(type, value);
-            io.to(`table_${tableId}`).emit('scoreUpdated', { playerId, type, value });
+            io.to(`table_${tableId}`).emit('refreshScore');
         } catch (error) {
-            console.error('Error updating score:', error);
+            console.error('Error refreshing score:', error);
         }
     });
 

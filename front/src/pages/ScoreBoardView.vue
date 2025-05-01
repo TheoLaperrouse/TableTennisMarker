@@ -36,7 +36,7 @@ import { useGetTable } from '@/composables/useTablesQueries';
 const socket = io('http://localhost:3000');
 const route = useRoute();
 const tableId = parseInt(route.params.id);
-const { data: tableData } = useGetTable(tableId);
+const { data: tableData, refetch } = useGetTable(tableId);
 const table = ref({});
 
 onMounted(() => {
@@ -46,11 +46,8 @@ onMounted(() => {
         table.value = { ...tableData.value, players: tableData.value.players.map((player) => ({ ...player })) };
     }
 
-    socket.on('scoreUpdated', (data) => {
-        const player = table.value.players.find((p) => p.id === data.playerId);
-        if (player) {
-            player[data.type] += data.value;
-        }
+    socket.on('refreshScore', () => {
+        refetch();
     });
 });
 

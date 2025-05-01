@@ -11,11 +11,19 @@ export async function getPlayers() {
 }
 
 /**
- * Create a table
+ * Create a player
  * @returns {Promise<Table>}
  */
 export async function createPlayer(player) {
     return api.post(playersUrl, player);
+}
+
+/**
+ * Update a player
+ * @returns {Promise<Player>}
+ */
+export async function updatePlayer({ id, ...player }) {
+    return api.put(`${playersUrl}/${id}`, player);
 }
 
 /**

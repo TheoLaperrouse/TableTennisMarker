@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
-import { deletePlayer, getPlayers, createPlayer } from '@/services/players.service';
+import { deletePlayer, getPlayers, createPlayer, updatePlayer } from '@/services/players.service';
 
 export const useGetPlayers = () => useQuery({ queryKey: ['players'], queryFn: getPlayers });
 
@@ -8,6 +8,17 @@ export const useCreatePlayer = () => {
 
     return useMutation({
         mutationFn: createPlayer,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['players']);
+        },
+    });
+};
+
+export const useUpdatePlayer = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: updatePlayer,
         onSuccess: () => {
             queryClient.invalidateQueries(['players']);
         },

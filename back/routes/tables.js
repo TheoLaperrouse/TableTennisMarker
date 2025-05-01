@@ -29,7 +29,7 @@ export default function (db) {
                 return res.status(404).json({ error: 'Table non trouvée' });
             }
 
-            const players = await db('players').where({ table_id: id });
+            const players = await db('players').where({ table_id: id }).orderBy('id', 'asc');
             table.players = players;
 
             res.json(table);

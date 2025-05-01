@@ -32,6 +32,36 @@ export default function (db) {
         }
     });
 
+    router.put('/:id', async (req, res) => {
+        const { id } = req.params;
+        const { sets, points, firstServer, tableId } = req.body;
+
+        if (firstServer && tableId) {
+            await db('players').where({ table_id: tableId }).update({ firstServer: false });
+            await db('players').where({ id: playerId, table_id: tableId }).update({ firstServer: true });
+        }
+
+        try {
+            const [updatedPlayer] = await db('players')
+                .where({ id })
+                .update({
+                    ...(sets !== undefined && sets < 3 && { sets }),
+                    ...(points !== undefined && points < 11 && { points }),
+                    ...(firstServer !== undefined && { firstServer }),
+                })
+                .returning('*');
+
+            if (updatedPlayer) {
+                res.json(updatedPlayer);
+            } else {
+                res.status(404).json({ error: 'Joueur introuvable' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Erreur lors de la mise à jour du joueur' });
+        }
+    });
+
     router.delete('/:id', async (req, res) => {
         const { id } = req.params;
 
