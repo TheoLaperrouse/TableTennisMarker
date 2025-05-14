@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/TheoLaperrouse/TableTennisMarker/compare/v1.2.0...v1.3.0) (2025-05-01)
+
+
+### Features
+
+* add first server / reset all points ([b21c3c3](https://github.com/TheoLaperrouse/TableTennisMarker/commit/b21c3c31fa2deb18633b96207bbd6c945bdfa305))
+
 # [1.2.0](https://github.com/TheoLaperrouse/TableTennisMarker/compare/v1.1.0...v1.2.0) (2025-01-18)
 
 
