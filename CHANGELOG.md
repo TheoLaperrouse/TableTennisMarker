@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/TheoLaperrouse/TableTennisMarker/compare/v1.3.0...v1.4.0) (2025-05-14)
+
+
+### Bug Fixes
+
+* modify deletion table case ([08f3702](https://github.com/TheoLaperrouse/TableTennisMarker/commit/08f370237ea50e49653f210ba9507742b80e6102))
+
+
+### Features
+
+* socket on all scoreBoards / proper current Server / Improve UI ([f11f085](https://github.com/TheoLaperrouse/TableTennisMarker/commit/f11f085f599b711a7219b5d66b16843d08fe2901))
+
 # [1.3.0](https://github.com/TheoLaperrouse/TableTennisMarker/compare/v1.2.0...v1.3.0) (2025-05-01)
 
 
