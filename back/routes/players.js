@@ -37,17 +37,17 @@ export default function (db) {
         const { sets, points, firstServer, tableId } = req.body;
 
         if (firstServer && tableId) {
-            await db('players').where({ table_id: tableId }).update({ firstServer: false });
-            await db('players').where({ id: playerId, table_id: tableId }).update({ firstServer: true });
+            await db('players').where({ table_id: tableId }).update({ first_server: false });
+            await db('players').where({ id, table_id: tableId }).update({ first_server: true });
         }
 
         try {
             const [updatedPlayer] = await db('players')
                 .where({ id })
                 .update({
-                    ...(sets !== undefined && sets < 3 && { sets }),
-                    ...(points !== undefined && points < 11 && { points }),
-                    ...(firstServer !== undefined && { firstServer }),
+                    ...(sets !== undefined && sets >= 0 && { sets }),
+                    ...(points !== undefined && points >= 0 && { points }),
+                    ...(firstServer !== undefined && { first_server: firstServer }),
                 })
                 .returning('*');
 

@@ -10,6 +10,11 @@
                     <span class="mr-3 font-extrabold">{{ player.name }} ({{ player.ranking }})</span>
                 </div>
                 <div class="flex items-center gap-4">
+                    <span
+                        v-if="getCurrentServer(table.players).id === player.id"
+                        class="ml-4 inline-block h-4 w-4 rounded-full bg-white"
+                        title="Serveur actuel"
+                    ></span>
                     <div class="flex h-5 w-5 items-center justify-center rounded bg-blue-700 text-center font-bold">
                         {{ player.sets }}
                     </div>
@@ -21,6 +26,7 @@
 </template>
 
 <script setup>
+import { getCurrentServer } from '../services/players.service';
 defineProps({
     table: {
         type: Object,

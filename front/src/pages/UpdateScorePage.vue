@@ -77,13 +77,14 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watchEffect, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { io } from 'socket.io-client';
+
 import { useGetTable } from '@/composables/useTablesQueries';
 import { useUpdatePlayer } from '../composables/usePlayersQueries';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faRotate } from '@fortawesome/free-solid-svg-icons';
+import { getCurrentServer } from '../services/players.service';
+import { socket } from '../services/socket.service';
 
-const socket = io('http://localhost:3000');
 const route = useRoute();
 const tableId = computed(() => route.params.id);
 const { data: table } = useGetTable(tableId.value);
@@ -91,23 +92,14 @@ const { mutateAsync: updatePlayer } = useUpdatePlayer();
 const players = ref([]);
 const firstServer = ref(null);
 
-const currentServer = computed(() => {
-    if ((players.value ?? []).length === 0 || !firstServer.value) {
-        return null;
-    }
-    const totalPoints = players.value.reduce((sum, player) => sum + player.points, 0);
-    const firstServerIndex = players.value.findIndex((player) => player.id === firstServer.value);
-    const currentIndex = (firstServerIndex + Math.floor(totalPoints / 2)) % players.value.length;
-    return players.value[currentIndex].id;
-});
-
-const isServing = (playerId) => currentServer.value === playerId;
+const currentServer = computed(() => getCurrentServer(players.value));
+const isServing = (playerId) => currentServer.value.id === playerId;
 
 const areScoresZero = computed(() => players.value.every((player) => player.sets === 0 && player.points === 0));
 
 const updateScore = async (playerId, type, value) => {
     const player = players.value.find((p) => p.id === playerId);
-    if (player) {
+    if (player[type] + value >= 0) {
         player[type] += value;
         await updatePlayer({ id: playerId, sets: player.sets, points: player.points });
         socket.emit('refreshScore', { tableId: tableId.value });
@@ -119,7 +111,7 @@ const resetPoints = async () => {
         player.points = 0;
         await updatePlayer({ id: player.id, points: 0 });
     }
-    socket.emit('refreshScore', { ableId: tableId.value });
+    socket.emit('refreshScore', { tableId: tableId.value });
 };
 
 watch(firstServer, async (newServer) => {
@@ -132,7 +124,7 @@ onMounted(() => {
     socket.emit('joinTable', tableId.value);
     watchEffect(() => {
         if (table.value) {
-            players.value = table.value.players.map((player) => ({ ...player }));
+            players.value = table.value.players;
         }
     });
 });

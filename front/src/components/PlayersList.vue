@@ -7,8 +7,8 @@
             <FontAwesomeIcon :icon="faPlus" class="text-sm" />
         </router-link>
         <h2 class="mb-4 text-xl font-bold">Liste des Joueurs</h2>
-        <ul v-if="players && players.length" class="space-y-2">
-            <li
+        <div v-if="players && players.length" class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div
                 v-for="player in players"
                 :key="player.id"
                 class="flex items-center justify-between rounded-lg bg-white p-3 shadow-md"
@@ -24,8 +24,8 @@
                 >
                     <FontAwesomeIcon :icon="faTrash" />
                 </button>
-            </li>
-        </ul>
+            </div>
+        </div>
         <p v-else>Aucun joueur trouvé.</p>
     </div>
 </template>

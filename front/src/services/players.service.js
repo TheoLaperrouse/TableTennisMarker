@@ -44,3 +44,22 @@ export async function deletePlayer(id) {
     console.log(id);
     return api.delete(`${playersUrl}/${id}`);
 }
+export const getCurrentServer = (players) => {
+    if (players.length !== 2) {
+        return null;
+    }
+    const firstServer = players[0].first_server ? players[0] : players[1];
+    const otherServer = players[0].first_server ? players[1] : players[0];
+    const sets = players[0].sets + players[1].sets;
+    const points = players[0].points + players[1].points;
+
+    const isFirstPlayerServing =
+        sets % 2 === 0
+            ? points >= 20
+                ? points % 2 === 0
+                : Math.floor(points / 2) % 2 === 0
+            : points >= 20
+              ? points % 2 !== 0
+              : Math.floor(points / 2) % 2 !== 0;
+    return isFirstPlayerServing ? firstServer : otherServer;
+};
